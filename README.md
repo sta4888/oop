@@ -166,3 +166,57 @@ car1.move()
 car1.signal()
 
 ```
+
+что же делать дальше? конечно же нам нужно собирать не одну машину, а разные так как у нашего завода (фабрики) могут быть разные заказы
+и тогда нам помогут такие вещи как наследование, полиморфизм, инкапсуляция и абстракция...
+
+
+
+и вот еще... мы ведь машину собираем из частей? а каждая часть имеет свои какие то особенности и свойста и эти детали тоже могут быть какими то классами (сущностями)
+
+и когда мы начнем собирать машины по частям, это начнет становиться на что то более понятное и таким образом мы затроним еще и понятие ПАТТЕРНОВ
+а вот и первый `паттерн Фасад (Facade)`  **_он скрывает все сложности деталей за чем то_**, тем самым мы не расписываем деталь в самом классе машина, а просто говорим, что у нас есть такая деталь от такого производителя
+
+
+
+```python
+class BaseCar:
+    
+    def __init__(self, door, height, width, length, engine_type):
+        self.doors = door  # количество дверей
+        self.height = height  # высота машины
+        self.width = width  # ширина
+        self.length = length  # длина
+        self.engine_type = engine_type  # тип двигателя
+
+    def move(self):
+        pass
+
+    def signal(self):
+        pass
+
+class Door:
+    def __init__(self):
+        self.window = True
+
+class Vaz(BaseCar):
+    
+    def __init__(self, door, height, width, length, engine_type, model):
+        super().__init__(door, height, width, length, engine_type)
+        self.model = model  # модель ВАЗ
+        self.door_type = Door()  # тип дверей
+
+    def move(self):
+        print(f"ВАЗ {self.model} поехал.")
+
+    def signal(self):
+        print(f"ВАЗ {self.model} сигналит: Би-би!")
+
+
+# Пример использования
+car1 = Vaz(4, 1450, 1700, 4200, "бензиновый", "2107")
+
+car1.move()
+car1.signal()
+
+```
