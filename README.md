@@ -220,3 +220,144 @@ car1.move()
 car1.signal()
 
 ```
+
+------------------------------------
+
+## Фабричный метод (пораждающий паттерн)
+
+далее нам нужно запустить завод для создания автомобилей, чтоб мы могли собирать авто разных моделей и не париться по поводц того, какую модель автомабиля нам заказали
+
+
+и чтоб нам каждый раз не создавать авто таким способом
+
+```python
+
+car1 = Vaz(4, 1450, 1700, 4200, "бензиновый", "2107")
+
+car1.move()
+car1.signal()
+
+```
+мы поступим не много иначе...
+
+есть несколько способов реализации такого подхода
+
+в первом случае мы это сделаем подходом чисто питонячим..
+
+
+```python
+class BaseCar(ABC):  # это наш базовый класс автомобилей (он нужен для того, чтоб у наших всех автомобилей был общий родитель и все автомобили имелии схожие методы)
+    @abstractmethod
+    def move(self):
+        pass
+    
+    @abstractmethod
+    def signal(self)
+        pass
+
+    
+
+# теперь мы занимаемся созданием конкретных моделей автомобиля
+class Vaz(BaseCar):
+
+    def __init__(self):
+        pass
+
+    def move(self):
+        print(f"ВАЗ {self.model} поехал.")
+
+    def signal(self):
+        print(f"ВАЗ {self.model} сигналит: Би-би!")
+
+
+class Kamaz(BaseCar):
+
+    def __init__(self):
+        pass
+
+    def move(self):
+        print(f"Камаз {self.model} поехал.")
+
+    def signal(self):
+        print(f"Камаз {self.model} сигналит: Фап-фап!") 
+
+# у нас есть на фабрике какой то цех ведь.. вот мы и создаем абстрактный какой то цех...
+class AutoCeh(ABC):
+
+    @abstractmethod
+    def factory_mathod(self)
+        pass
+
+    def some_operation(self) -> str:
+        product = self.factory_method()
+        result = f"Creator: The same creator's code has just worked with {product.signal()}"
+
+        return result
+
+
+# конкретный цех...
+class VazCeh(AutoCeh):
+
+    def factory_mathod(self):
+        return Vaz()
+
+class VazCeh(AutoCeh):
+
+    def factory_mathod(self):
+        return Kamaz()
+
+def make_auto(ceh: AutoCeh): # или create можно назвать его
+    print(cah.some_operation()) 
+
+```
+
+или мы можем реализовать не много иначе...
+
+```python
+class Car:  # это наш базовый класс автомобилей (он нужен для того, чтоб у наших всех автомобилей был общий родитель и все автомобили имелии схожие методы)
+
+    def __init__(self, door, height, width, length, engine_type):
+        self.doors = door  # количество дверей
+        self.height = height  # высота машины
+        self.width = width  # ширина
+        self.length = length  # длина
+        self.engine_type = engine_type  # тип двигателя
+
+    @classmethod
+    def create_vaz(cls):
+        return cls(4, 1450, 1700, 4200, "бензиновый")
+    
+    @classmethod
+    def create_kamaz(cls)
+        return cls(4, 1450, 1700, 4200, "дизель")
+
+    
+
+# теперь мы занимаемся созданием конкретных моделей автомобиля
+class Vaz(BaseCar):
+
+    def __init__(self):
+        pass
+
+    def move(self):
+        print(f"ВАЗ {self.model} поехал.")
+
+    def signal(self):
+        print(f"ВАЗ {self.model} сигналит: Би-би!")
+
+
+class Kamaz(BaseCar):
+
+    def __init__(self):
+        pass
+
+    def move(self):
+        print(f"Камаз {self.model} поехал.")
+
+    def signal(self):
+        print(f"Камаз {self.model} сигналит: Фап-фап!") 
+
+
+```
+
+это 2 разные реализации, одного и того же паттерна ФАБРИЧНОГО метода
